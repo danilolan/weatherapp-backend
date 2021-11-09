@@ -13,9 +13,10 @@ app.get('/weather',(req,res)=>{
     (async () => {
         try {
           const response = await axios.get(
-              `http://api.weatherapi.com/v1/current.json?key=${key.weather}&q=${req.query.lat},${req.query.lon}&aqi=no`
+              `http://api.weatherapi.com/v1/current.json?key=${key.weather}&q=${req.query.lat},${req.query.lng}&aqi=no`
             )
-          res.send(response.data.current)
+            
+          res.send(response.data)
         } catch (error) {
           console.log(error);
           res.send("Erro")
@@ -26,8 +27,9 @@ app.get('/weather',(req,res)=>{
 app.get('/autocomplete',(req,res)=>{
   (async () => {
       try {
+        const string = req.query.string.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
         const response = await axios.get(
-            `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${req.query.string}&key=${key.google}`
+            `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${string}&key=${key.google}`
           )
         res.send(response.data)
       } catch (error) {
@@ -44,7 +46,6 @@ app.get('/search',(req,res)=>{
             `https://maps.googleapis.com/maps/api/place/details/json?place_id=${req.query.id}&fields=name%2Cformatted_address%2Cgeometry&key=${key.google}`
           )
         res.send(response.data)
-        console.log(req.query.search)
       } catch (error) {
         console.log(error);
         res.send("Erro")
