@@ -1,4 +1,4 @@
-# WeatherApp - frontend
+# WeatherApp - backend
 
 # Sobre o projeto
 
